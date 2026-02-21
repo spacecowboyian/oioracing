@@ -1,0 +1,20 @@
+---
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>OIO Race results</title>
+  </head>
+  <body>
+    <h1>OIO Race results</h1>
+    <ul>
+      {% assign year_pages = site.pages | where_exp: "p", "p.dir == '/raceresults/'" | sort: "basename" | reverse %}
+      {% for page in year_pages %}
+      <li><a href="{{ page.url | relative_url }}">{{ page.basename }}</a></li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>
