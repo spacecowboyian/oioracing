@@ -1,20 +1,16 @@
 ---
+layout: default
+title: OIO Race results
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>OIO Race results</title>
-  </head>
-  <body>
-    <h1>OIO Race results</h1>
-    <ul>
-      {% assign year_pages = site.pages | where_exp: "p", "p.dir == '/raceresults/'" | sort: "name" | reverse %}
-      {% for page in year_pages %}
-      <li><a href="{{ page.url | relative_url }}">{{ page.url | split: '/' | last | split: '.' | first }}</a></li>
-      {% endfor %}
-    </ul>
-  </body>
-</html>
+<h1 class="h2 mb-4">OIO Race results</h1>
+<ul class="list-group">
+  {% assign year_pages = site.pages | where_exp: "p", "p.dir == '/raceresults/'" | sort: "name" | reverse %}
+  {% for page in year_pages %}
+  <li class="list-group-item">
+    <a href="{{ page.url | relative_url }}" class="text-decoration-none">
+      {{ page.url | split: '/' | last | split: '.' | first }}
+    </a>
+  </li>
+  {% endfor %}
+</ul>
