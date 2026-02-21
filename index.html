@@ -11,9 +11,9 @@
   <body>
     <h1>OIO Race results</h1>
     <ul>
-      {% assign year_pages = site.pages | where_exp: "p", "p.dir == '/raceresults/'" | sort: "basename" | reverse %}
+      {% assign year_pages = site.pages | where_exp: "p", "p.dir == '/raceresults/'" | sort: "name" | reverse %}
       {% for page in year_pages %}
-      <li><a href="{{ page.url | relative_url }}">{{ page.basename }}</a></li>
+      <li><a href="{{ page.url | relative_url }}">{{ page.name | split: '.' | first }}</a></li>
       {% endfor %}
     </ul>
   </body>
