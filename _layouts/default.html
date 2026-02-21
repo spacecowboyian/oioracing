@@ -10,6 +10,13 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-SnH5WK+bZxgPHs44uWix+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkR4j8R2LTqkg3aY7Wz+L6Y0fFQYBvN3mQ8Q=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <style>
       body {
         background-color: #f2f2f2;
@@ -51,6 +58,46 @@
       th {
         background-color: #e5e5e5;
       }
+      .mobile-action-col,
+      .mobile-action-cell,
+      .mobile-details-row {
+        display: none;
+      }
+      .mobile-row-toggle {
+        border-color: #bfbfbf;
+        color: #111;
+      }
+      .mobile-row-toggle:hover,
+      .mobile-row-toggle:focus {
+        background-color: #e5e5e5;
+        color: #111;
+        border-color: #bfbfbf;
+      }
+      .mobile-details-card {
+        background-color: #f2f2f2;
+        border: 1px solid #d9d9d9;
+        border-radius: 0.375rem;
+        padding: 0.75rem;
+      }
+      .mobile-details-item + .mobile-details-item {
+        margin-top: 0.35rem;
+      }
+      @media (max-width: 767.98px) {
+        .mobile-hide-col {
+          display: none;
+        }
+        .mobile-action-col,
+        .mobile-action-cell {
+          display: table-cell;
+          width: 1%;
+          white-space: nowrap;
+          text-align: center;
+          vertical-align: middle;
+        }
+        .mobile-details-row.is-open {
+          display: table-row;
+        }
+      }
     </style>
   </head>
   <body>
@@ -65,5 +112,93 @@
         {{ content }}
       </section>
     </main>
+    <script>
+      (function () {
+        var tables = document.querySelectorAll('.content-wrap table');
+        tables.forEach(function (table) {
+          var headers = table.querySelectorAll('thead th');
+          var headerLabels = Array.from(headers).map(function (header) {
+            return header.textContent.trim().toLowerCase();
+          });
+
+          var classIndex = headerLabels.indexOf('class');
+          var carIndex = headerLabels.indexOf('car');
+          var notesIndex = headerLabels.indexOf('notes');
+          if (classIndex === -1 || carIndex === -1 || notesIndex === -1) {
+            return;
+          }
+
+          var hiddenIndexes = [classIndex, carIndex, notesIndex];
+          hiddenIndexes.forEach(function (index) {
+            if (headers[index]) {
+              headers[index].classList.add('mobile-hide-col');
+            }
+          });
+
+          var actionHeader = document.createElement('th');
+          actionHeader.className = 'mobile-action-col';
+          actionHeader.setAttribute('aria-label', 'More details');
+          actionHeader.textContent = '';
+          var headerRow = table.querySelector('thead tr');
+          if (!headerRow) {
+            return;
+          }
+          headerRow.appendChild(actionHeader);
+
+          var bodyRows = table.querySelectorAll('tbody tr');
+          bodyRows.forEach(function (row) {
+            var cells = Array.from(row.querySelectorAll('td'));
+            hiddenIndexes.forEach(function (index) {
+              if (cells[index]) {
+                cells[index].classList.add('mobile-hide-col');
+              }
+            });
+
+            var detailParts = [
+              { label: 'Class', value: cells[classIndex] ? cells[classIndex].innerHTML : '' },
+              { label: 'Car', value: cells[carIndex] ? cells[carIndex].innerHTML : '' },
+              { label: 'Notes', value: cells[notesIndex] ? cells[notesIndex].innerHTML : '' }
+            ];
+
+            var actionCell = document.createElement('td');
+            actionCell.className = 'mobile-action-cell';
+            var button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'btn btn-sm mobile-row-toggle';
+            button.setAttribute('aria-expanded', 'false');
+            button.setAttribute('aria-label', 'Show row details');
+            button.innerHTML = '<i class="fa-solid fa-ellipsis" aria-hidden="true"></i>';
+            actionCell.appendChild(button);
+            row.appendChild(actionCell);
+
+            var detailsRow = document.createElement('tr');
+            detailsRow.className = 'mobile-details-row';
+            var detailsCell = document.createElement('td');
+            detailsCell.colSpan = row.children.length;
+            detailsCell.innerHTML =
+              '<div class="mobile-details-card small">' +
+              detailParts
+                .map(function (item) {
+                  return (
+                    '<div class="mobile-details-item"><strong>' +
+                    item.label +
+                    ':</strong> ' +
+                    (item.value || '—') +
+                    '</div>'
+                  );
+                })
+                .join('') +
+              '</div>';
+            detailsRow.appendChild(detailsCell);
+            row.parentNode.insertBefore(detailsRow, row.nextSibling);
+
+            button.addEventListener('click', function () {
+              var isOpen = detailsRow.classList.toggle('is-open');
+              button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+            });
+          });
+        });
+      })();
+    </script>
   </body>
 </html>
