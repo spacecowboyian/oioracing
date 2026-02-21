@@ -64,14 +64,23 @@
         display: none;
       }
       .mobile-row-toggle {
-        border-color: #bfbfbf;
+        border: 0;
+        background: transparent;
         color: #111;
+        padding: 0;
+        line-height: 1;
+      }
+      .mobile-row-toggle i {
+        transition: transform 0.2s ease;
+      }
+      .mobile-row-toggle.is-open i {
+        transform: rotate(180deg);
       }
       .mobile-row-toggle:hover,
       .mobile-row-toggle:focus {
-        background-color: #e5e5e5;
         color: #111;
-        border-color: #bfbfbf;
+        background: transparent;
+        box-shadow: none;
       }
       .mobile-details-card {
         background-color: #f2f2f2;
@@ -164,10 +173,10 @@
             actionCell.className = 'mobile-action-cell';
             var button = document.createElement('button');
             button.type = 'button';
-            button.className = 'btn btn-sm mobile-row-toggle';
+            button.className = 'mobile-row-toggle';
             button.setAttribute('aria-expanded', 'false');
             button.setAttribute('aria-label', 'Show row details');
-            button.innerHTML = '<i class="fa-solid fa-ellipsis" aria-hidden="true"></i>';
+            button.innerHTML = '<i class="fa-solid fa-chevron-down" aria-hidden="true"></i>';
             actionCell.appendChild(button);
             row.appendChild(actionCell);
 
@@ -195,6 +204,7 @@
             button.addEventListener('click', function () {
               var isOpen = detailsRow.classList.toggle('is-open');
               button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+              button.classList.toggle('is-open', isOpen);
             });
           });
         });
