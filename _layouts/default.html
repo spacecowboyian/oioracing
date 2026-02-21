@@ -10,13 +10,6 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-      integrity="sha512-SnH5WK+bZxgPHs44uWix+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkR4j8R2LTqkg3aY7Wz+L6Y0fFQYBvN3mQ8Q=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
     <style>
       body {
         background-color: #f2f2f2;
@@ -64,22 +57,18 @@
         display: none;
       }
       .mobile-row-toggle {
-        border: 0;
-        background: transparent;
+        border: 1px solid #bfbfbf;
+        background: #fff;
         color: #111;
-        padding: 0;
+        padding: 0.05rem 0.4rem;
         line-height: 1;
-      }
-      .mobile-row-toggle i {
-        transition: transform 0.2s ease;
-      }
-      .mobile-row-toggle.is-open i {
-        transform: rotate(180deg);
+        border-radius: 0.25rem;
+        font-size: 0.9rem;
       }
       .mobile-row-toggle:hover,
       .mobile-row-toggle:focus {
         color: #111;
-        background: transparent;
+        background: #e5e5e5;
         box-shadow: none;
       }
       .mobile-details-card {
@@ -176,7 +165,7 @@
             button.className = 'mobile-row-toggle';
             button.setAttribute('aria-expanded', 'false');
             button.setAttribute('aria-label', 'Show row details');
-            button.innerHTML = '<i class="fa-solid fa-chevron-down" aria-hidden="true"></i>';
+            button.textContent = '•••';
             actionCell.appendChild(button);
             row.appendChild(actionCell);
 
@@ -204,7 +193,7 @@
             button.addEventListener('click', function () {
               var isOpen = detailsRow.classList.toggle('is-open');
               button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-              button.classList.toggle('is-open', isOpen);
+              button.setAttribute('aria-label', isOpen ? 'Hide row details' : 'Show row details');
             });
           });
         });
