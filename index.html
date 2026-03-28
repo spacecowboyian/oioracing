@@ -5,11 +5,11 @@ title: OIO Race results
 
 <h1 class="h2 mb-4">OIO Race results</h1>
 <ul class="list-group">
-  {% assign year_pages = site.pages | where_exp: "p", "p.dir == '/raceresults/'" | sort: "name" | reverse %}
-  {% for page in year_pages %}
+  {% assign year_indexes = site.pages | where: "name", "index.md" | where_exp: "p", "p.dir contains '/raceresults/'" | sort: "dir" | reverse %}
+  {% for page in year_indexes %}
   <li class="list-group-item">
     <a href="{{ page.url | relative_url }}" class="text-decoration-none">
-      {{ page.url | split: '/' | last | split: '.' | first }}
+      {{ page.dir | split: '/' | last }}
     </a>
   </li>
   {% endfor %}
